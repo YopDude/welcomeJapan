@@ -9,14 +9,35 @@
     <style>
         body { font-family: 'Varela Round', sans-serif; }
         .hidden { display: none; }
+        .speech-bubble { position: relative; }
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            margin-left: -10px;
+            border-width: 10px 10px 0;
+            border-style: solid;
+            border-color: white transparent transparent transparent;
+        }
     </style>
 </head>
-<body class="bg-sky-300 text-white min-h-screen flex flex-col items-center p-6">
+<body class="bg-sky-300 text-white min-h-screen flex flex-col items-center p-6 relative">
+
+    <!-- Hint Guide -->
+    <div id="hint-guide" class="fixed left-5 top-1/2 -mt-20 hidden md:block z-50">
+        <div class="bg-white p-4 rounded-xl shadow-lg border-2 border-sky-600 text-sky-900 font-bold mb-4">
+            Check out the Japan travel cheat sheet!
+        </div>
+        <svg width="200" height="200" class="absolute left-10">
+            <path d="M 0 0 Q 50 150 150 150" stroke="#0284c7" stroke-width="3" stroke-dasharray="8 8" fill="none" />
+            <path d="M 140 140 L 150 150 L 140 160" stroke="#0284c7" stroke-width="3" fill="none" />
+        </svg>
+    </div>
 
     <!-- Mascot & Speech Bubble -->
     <div class="flex flex-col items-center mb-8">
         <img src="images/kitsune-kun.png" alt="Kitsune-kun" class="w-32 h-32 mb-4">
-        <!-- Fixed height container prevents pushing elements -->
         <div class="h-24 flex items-center justify-center">
             <div class="bg-white text-sky-600 p-4 rounded-3xl shadow-lg max-w-xs relative text-center speech-bubble">
                 <p id="kitsune-speech" class="text-sm">Kon'nichiwa! Ready to explore Japan?</p>
@@ -24,48 +45,21 @@
         </div>
     </div>
 
-    <!-- Main Quiz/Home Container -->
     <div id="quiz-box" class="w-full max-w-lg bg-white/20 backdrop-blur-sm p-6 rounded-3xl shadow-xl">
-        
-        <!-- Home Screen -->
         <div id="home-screen">
             <h1 class="text-3xl font-bold mb-4 text-sky-900 text-center">Welcome!</h1>
             <p class="mb-6 text-center">Choose how you want to practice:</p>
             <div class="grid gap-3">
                 <button onclick="startQuiz('quick')" class="bg-white text-sky-600 p-4 rounded-xl font-bold hover:bg-sky-50 transition">Quick Quiz</button>
                 <button onclick="startQuiz('final')" class="bg-white text-sky-600 p-4 rounded-xl font-bold hover:bg-sky-50 transition">Final Exam</button>
-                <a href="Japan_Survival_Cheat_Sheet.pdf" download class="block text-center bg-sky-600 text-white p-4 rounded-xl font-bold hover:bg-sky-700 transition">Download Cheat-Sheet</a>
+                <a id="cheat-sheet-btn" href="Japan_Travel_Cheat_Sheet.pdf" download onclick="markAsDownloaded()" class="block text-center bg-sky-600 text-white p-4 rounded-xl font-bold hover:bg-sky-700 transition">Download Cheat-Sheet</a>
             </div>
         </div>
-
-        <!-- Quiz Area (Hidden by default) -->
         <div id="counter" class="text-sm mb-2 opacity-80 hidden text-center"></div>
         <div id="quiz-content"></div>
     </div>
 
-    <!-- Load your data and logic -->
     <script src="quizData.js" defer></script>
     <script src="main.js" defer></script>
-
-    <style>
-    body { font-family: 'Varela Round', sans-serif; }
-    .hidden { display: none; }
-    
-    /* Speech Bubble Triangle */
-    .speech-bubble {
-        position: relative;
-    }
-    .speech-bubble::after {
-        content: '';
-        position: absolute;
-        bottom: -10px; /* Adjust based on your layout */
-        left: 50%;
-        margin-left: -10px;
-        border-width: 10px 10px 0;
-        border-style: solid;
-        border-color: white transparent transparent transparent;
-    }
-</style>
-
 </body>
 </html>

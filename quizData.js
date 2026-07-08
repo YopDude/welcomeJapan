@@ -1,14 +1,36 @@
 const quizData = [
-    { 
-        q: "How do you say 'Thank you' politely?", 
-        a: "Arigatou gozaimasu", 
-        o: ["Arigatou", "Arigatou gozaimasu", "Sumimasen"], 
-        tip: "Say this to shop staff or strangers to be extra polite." 
-    },
-    { 
-        q: "How do you ask for the check?", 
-        a: "Okaikei onegaishimasu", 
-        o: ["Okaikei onegaishimasu", "Ikura desu ka?", "Sumimasen"], 
-        tip: "Tipping is not practiced in Japan, so this is all you need!" 
-    }
+    { q: "How do you say 'Good morning'?", a: "Ohayou gozaimasu", o: [{text: "Ohayou gozaimasu", audio: "おはようございます.wav"}, {text: "Konnichiwa", audio: "こんにちは.wav"}, {text: "Konbanwa", audio: "こんばんは.wav"}], tip: "Use this before noon." },
+    { q: "How do you say 'Hello / good afternoon'?", a: "Konnichiwa", o: [{text: "Ohayou gozaimasu", audio: "おはようございます.wav"}, {text: "Konnichiwa", audio: "こんにちは.wav"}, {text: "Konbanwa", audio: "こんばんは.wav"}], tip: "The standard daytime greeting." },
+    { q: "How do you say 'Good evening'?", a: "Konbanwa", o: [{text: "Ohayou gozaimasu", audio: "おはようございます.wav"}, {text: "Konnichiwa", audio: "こんにちは.wav"}, {text: "Konbanwa", audio: "こんばんは.wav"}], tip: "Used once the sun goes down." },
+    { q: "How do you say 'Excuse me / sorry'?", a: "Sumimasen", o: [{text: "Sumimasen", audio: "すみません.wav"}, {text: "Douzo", audio: "どうぞ.wav"}, {text: "Hai", audio: "はい.wav"}], tip: "The most versatile word in Japan!" },
+    { q: "How do you say 'Go ahead / here you go'?", a: "Douzo", o: [{text: "Sumimasen", audio: "すみません.wav"}, {text: "Douzo", audio: "どうぞ.wav"}, {text: "Hai", audio: "はい.wav"}], tip: "Politely offer something to someone." },
+    { q: "How do you say 'Yes'?", a: "Hai", o: [{text: "Hai", audio: "はい.wav"}, {text: "Iie", audio: "いいえ.wav"}, {text: "Sumimasen", audio: "すみません.wav"}], tip: "" },
+    { q: "How do you say 'No'?", a: "Iie", o: [{text: "Hai", audio: "はい.wav"}, {text: "Iie", audio: "いいえ.wav"}, {text: "Sumimasen", audio: "すみません.wav"}], tip: "" },
+    { q: "How do you say 'It's okay / I'm fine'?", a: "Daijoubu desu", o: [{text: "Daijoubu desu", audio: "大丈夫です.wav"}, {text: "Sumimasen", audio: "すみません.wav"}, {text: "Arigatou gozaimasu", audio: "ありがとうございます.wav"}], tip: "Useful for declining politely." },
+    { q: "How do you say 'Thank you' (polite)?", a: "Arigatou gozaimasu", o: [{text: "Arigatou", audio: "ありがとう.wav"}, {text: "Arigatou gozaimasu", audio: "ありがとうございます.wav"}, {text: "Sumimasen", audio: "すみません.wav"}], tip: "Essential for polite interactions." },
+    { q: "How do you say 'Please' (asking for something)?", a: "Onegaishimasu", o: [{text: "Onegaishimasu", audio: "お願いします.wav"}, {text: "Douzo", audio: "どうぞ.wav"}, {text: "Sumimasen", audio: "すみません.wav"}], tip: "Add this after naming what you want." },
+    { q: "Where is the station?", a: "Eki wa doko desu ka?", o: [{text: "Eki wa doko desu ka?", audio: "駅はどこですか.wav"}, {text: "Eigo ga hanasemasu ka?", audio: "英語が話せますか.wav"}, {text: "Chotto matte kudasai", audio: "ちょっと待ってください.wav"}], tip: "" },
+    { q: "Do you speak English?", a: "Eigo ga hanasemasu ka?", o: [{text: "Eigo ga hanasemasu ka?", audio: "英語が話せますか.wav"}, {text: "Eki wa doko desu ka?", audio: "駅はどこですか.wav"}, {text: "Chotto matte kudasai", audio: "ちょっと待ってください.wav"}], tip: "" },
+    { q: "Please wait a moment", a: "Chotto matte kudasai", o: [{text: "Chotto matte kudasai", audio: "ちょっと待ってください.wav"}, {text: "Onegaishimasu", audio: "お願いします.wav"}, {text: "Sumimasen", audio: "すみません.wav"}], tip: "" },
+    { q: "To [location], please", a: "[Location] made onegaishimasu", o: [{text: "[Location] made onegaishimasu", audio: "場所までお願いします.wav"}, {text: "Eki wa doko desu ka?", audio: "駅はどこですか.wav"}, {text: "Chotto matte kudasai", audio: "ちょっと待ってください.wav"}], tip: "Replace [Location] with your destination." },
+    { q: "Which platform for?", a: "[Basho] iki wa nanbansen desu ka?", o: [{text: "[Basho] iki wa nanbansen desu ka?", audio: "場所行きは何番線ですか？.wav"}, {text: "Kono densha wa tomarimasu ka?", audio: "この電車は止まりますか.wav"}, {text: "Kono kaado o chaaji dekimasu ka?", audio: "このカードをチャージできますか.wav"}], tip: "" },
+    { q: "Does this train stop here?", a: "Kono densha wa tomarimasu ka?", o: [{text: "[Basho] iki wa nanbansen desu ka?", audio: "何番線ですか.wav"}, {text: "Kono densha wa tomarimasu ka?", audio: "この電車は止まりますか.wav"}, {text: "Kono kaado o chaaji dekimasu ka?", audio: "このカードをチャージできますか.wav"}], tip: "" },
+    { q: "Can I recharge this card?", a: "Kono kaado o chaaji dekimasu ka?", o: [{text: "Kono kaado o chaaji dekimasu ka?", audio: "このカードをチャージできますか.wav"}, {text: "Kono densha wa tomarimasu ka?", audio: "この電車は止まりますか.wav"}, {text: "Eki wa doko desu ka?", audio: "駅はどこですか.wav"}], tip: "" },
+    { q: "Please give me this", a: "Kore o kudasai", o: [{text: "Kore o kudasai", audio: "これをください.wav"}, {text: "Oikura desu ka? / Okaikei onegaishimasu", audio: "おいくらですか？お会計をお願いします.wav"}, {text: "Atatamete kudasai", audio: "温めてください.wav"}], tip: "Great when pointing at an item." },
+    { q: "How much? / Check, please", a: "Oikura desu ka? / Okaikei onegaishimasu", o: [{text: "Oikura desu ka? / Okaikei onegaishimasu", audio: "おいくらですか？お会計をお願いします.wav"}, {text: "Kore o kudasai", audio: "これをください.wav"}, {text: "Shichaku dekimasu ka?", audio: "試着できますか.wav"}], tip: "Tipping is not practiced in Japan." },
+    { q: "Can I pay by credit card?", a: "Kurejitto kaado wa dekimasu ka?", o: [{text: "Kurejitto kaado wa dekimasu ka?", audio: "クレジットカードはできますか.wav"}, {text: "Fukuro wa go-riyou desu ka?", audio: "袋は必要ですか.wav"}, {text: "Atatamete kudasai", audio: "温めてください.wav"}], tip: "Cash is still widely used!" },
+    { q: "Please warm it", a: "Atatamete kudasai", o: [{text: "Atatamete kudasai", audio: "温めてください.wav"}, {text: "Shichaku dekimasu ka?", audio: "試着できますか.wav"}, {text: "Kore o kudasai", audio: "これをください.wav"}], tip: "Common for konbini snacks." },
+    { q: "Can I try this on?", a: "Shichaku dekimasu ka?", o: [{text: "Shichaku dekimasu ka?", audio: "試着できますか.wav"}, {text: "Atatamete kudasai", audio: "温めてください.wav"}, {text: "Oikura desu ka? / Okaikei onegaishimasu", audio: "おいくらですか？お会計をお願いします.wav"}], tip: "" },
+    { q: "Would you like a bag?", a: "Fukuro wa go-riyou desu ka?", o: [{text: "Fukuro wa go-riyou desu ka?", audio: "袋は必要ですか.wav"}, {text: "Nan-mei sama desu ka?", audio: "何名様ですか.wav"}, {text: "Oikura desu ka? / Okaikei onegaishimasu", audio: "おいくらですか？お会計をお願いします.wav"}], tip: "Store staff will ask this." },
+    { q: "How many in your group?", a: "Nan-mei sama desu ka?", o: [{text: "Nan-mei sama desu ka?", audio: "何名様ですか.wav"}, {text: "Hitori desu", audio: "一人です.wav"}, {text: "Futari desu", audio: "ふたりです.wav"}], tip: "" },
+    { q: "Just one", a: "Hitori desu", o: [{text: "Hitori desu", audio: "一人です.wav"}, {text: "Futari desu", audio: "ふたりです.wav"}, {text: "Nan-mei sama desu ka?", audio: "何名様ですか.wav"}], tip: "" },
+    { q: "Two of us", a: "Futari desu", o: [{text: "Hitori desu", audio: "一人です.wav"}, {text: "Futari desu", audio: "ふたりです.wav"}, {text: "Nan-mei sama desu ka?", audio: "何名様ですか.wav"}], tip: "" },
+    { q: "Does this contain [food]?", a: "Kore wa [niku] ga haitte imasu ka?", o: [{text: "Kore wa [niku] ga haitte imasu ka?", audio: "これわ肉が入っていますか？.wav"}, {text: "Bejitarian desu", audio: "ベジタリアンです.wav"}, {text: "Sumimasen", audio: "すみません.wav"}], tip: "" },
+    { q: "I'm vegetarian", a: "Bejitarian desu", o: [{text: "Bejitarian desu", audio: "ベジタリアンです.wav"}, {text: "Kore wa [niku] ga haitte imasu ka?", audio: "これわ肉が入っていますか？.wav"}, {text: "Sumimasen", audio: "すみません.wav"}], tip: "" },
+    { q: "Help!", a: "Tasukete!", o: [{text: "Tasukete!", audio: "助けて.wav"}, {text: "Isha ga hitsuyou desu", audio: "医者が必要です.wav"}, {text: "Sumimasen", audio: "すみません.wav"}], tip: "" },
+    { q: "I need a doctor", a: "Isha ga hitsuyou desu", o: [{text: "Tasukete!", audio: "助けて.wav"}, {text: "Isha ga hitsuyou desu", audio: "医者が必要です.wav"}, {text: "Pasupooto o nakushimashita", audio: "パスポートをなくしました.wav"}], tip: "" },
+    { q: "I lost my passport", a: "Pasupooto o nakushimashita", o: [{text: "Tasukete!", audio: "助けて.wav"}, {text: "Isha ga hitsuyou desu", audio: "医者が必要です.wav"}, {text: "Pasupooto o nakushimashita", audio: "パスポートをなくしました.wav"}], tip: "" },
+    { q: "Is there wifi?", a: "Wifi wa arimasu ka?", o: [{text: "Wifi wa arimasu ka?", audio: "ワイファイはありますか.wav"}, {text: "Eki wa doko desu ka?", audio: "駅はどこですか.wav"}, {text: "Sumimasen", audio: "すみません.wav"}], tip: "Public wifi can be patchy." },
+    { q: "Can I pay by cash?", a: "Genkin de haraemasu ka?", o: [{text: "Genkin de haraemasu ka?", audio: "現金で払えますか.wav"}, {text: "Oikura desu ka? / Okaikei onegaishimasu", audio: "おいくらですか？お会計をお願いします.wav"}, {text: "Kurejitto kaado wa dekimasu ka?", audio: "クレジットカードはできますか.wav"}], tip: "" },
+    { q: "How would you like to pay?", a: "Oshiharai wa dou nasaimasu ka?", o: [{text: "Oshiharai wa dou nasaimasu ka?", audio: "お支払いはどうなさいますか.wav"}, {text: "Oikura desu ka? / Okaikei onegaishimasu", audio: "おいくらですか？お会計をお願いします.wav"}, {text: "Fukuro wa go-riyou desu ka?", audio: "袋は必要ですか.wav"}], tip: "" }
 ];
