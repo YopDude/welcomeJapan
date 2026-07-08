@@ -99,7 +99,11 @@ function renderQuestion() {
             ${q.o.map(opt => `
                 <div class="flex gap-2">
                     <button onclick="handleAnswer('${opt.text}')" class="flex-grow bg-white text-sky-600 p-3 rounded-xl hover:bg-sky-100 transition shadow-sm font-bold">${opt.text}</button>
-                    <button onclick="playAudio('${opt.audio}')" class="bg-white text-sky-600 px-4 rounded-xl hover:bg-sky-100 shadow-sm">🔊</button>
+                    <button onclick="playAudio('${opt.audio}')" class="bg-white text-sky-600 px-3 py-2 rounded-xl hover:bg-sky-100 shadow-sm flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.5c-.88 0-1.6-.72-1.6-1.6V9.85c0-.88.72-1.6 1.6-1.6h2.25z" />
+                    </svg>
+                    </button>
                 </div>
             `).join('')}
         </div>
