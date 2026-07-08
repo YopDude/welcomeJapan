@@ -1,11 +1,12 @@
 // Image arrays must be defined globally so functions can access them
-const correctImgs = ['images/kitsune-happy-1.png', 'images/kitsune-happy-2.png'];
-const wrongImgs = ['images/kitsune-sad-1.png', 'images/kitsune-sad-2.png'];
+const correctImgs = ['images/kitsune-happy-1.png', 'images/kitsune-happy-2.png', 'images/kitsune-happy-3.png'];
+const wrongImgs = ['images/kitsune-sad-1.png', 'images/kitsune-sad-2.png', 'images/kitsune-sad-3.png'];
 const summaryImgs = {
     low: 'images/kitsune-summary-low.png',
     mid: 'images/kitsune-summary-mid.png',
     quickPerfect: 'images/kitsune-quick-perfect.png',
-    finalPerfect: 'images/kitsune-final-perfect.png'
+    finalPerfect: 'images/kitsune-final-perfect.png',
+    zero: 'images/kitsune-extra.png'
 };
 
 let state = { currentIdx: 0, score: 0, results: [] };
@@ -39,7 +40,7 @@ function backToHome() {
     document.getElementById('counter').classList.add('hidden');
     document.getElementById('home-screen').classList.remove('hidden');
     document.querySelector('img[alt="Kitsune-kun"]').src = 'images/kitsune-kun.png';
-    document.getElementById('kitsune-speech').innerText = "Kon'nichiwa! Ready to explore Japan?";
+    document.getElementById('kitsune-speech').innerText = "Konnichiwa! Ready to explore Japan?";
 }
 
 function handleBackToHome() {
@@ -87,14 +88,38 @@ function handleAnswer(selected) {
     (state.currentIdx < activeQuizData.length) ? renderQuestion() : renderSummary(quizMode);
 }
 
+function checkUnlockStatus() {
+    const isUnlocked = localStorage.getItem('extrasUnlocked') === 'true';
+    if (isUnlocked) {
+        // Unlock button visibility
+        const extraBtn = document.getElementById('extras-btn');
+        if (extraBtn) extraBtn.classList.remove('hidden');
+        
+        // Add star to Final Exam button
+        const finalBtn = document.querySelector('button[onclick="startQuiz(\'final\')"]');
+        if (finalBtn && !finalBtn.innerText.includes('★')) finalBtn.innerText += ' ★';
+    }
+}
+
 function renderSummary(mode) {
     document.getElementById('counter').innerText = "Quiz Finished!";
     const percentage = (state.score / activeQuizData.length) * 100;
-    const img = document.querySelector('img[alt="Kitsune-kun"]');
-    img.src = (percentage < 30) ? summaryImgs.low : (percentage >= 80) ? (mode === 'quick' ? summaryImgs.quickPerfect : summaryImgs.finalPerfect) : summaryImgs.mid;
+    
+    // Check if user passed the 85% threshold in Final mode
+    if (mode === 'final' && percentage >= 85) {
+        localStorage.setItem('extrasUnlocked', 'true');
+        checkUnlockStatus();
+    }
+    const img = document.querySelector('img[alt="Kitsune-kun"]'); // Score config for final image
+    img.src = (percentage === 0) ? summaryImgs.zero :
+          (percentage < 30) ? summaryImgs.low : 
+          (percentage >= 85) ? (mode === 'quick' ? summaryImgs.quickPerfect : summaryImgs.finalPerfect) : 
+          summaryImgs.mid;
+
     document.getElementById('quiz-content').innerHTML = `
         <h2 class="text-2xl mb-4 text-center font-bold text-sky-900">Score: ${state.score} / ${activeQuizData.length}</h2>
         <div class="max-h-60 overflow-y-auto mb-4">${state.results.map(r => `<div class="mb-4 p-3 bg-white/40 rounded-xl"><p class="font-bold text-sky-900">${r.q}</p><p class="${r.correct ? 'text-emerald-700' : 'text-rose-700'} font-bold">${r.correct ? '✓ Correct!' : `❌ Your answer: ${r.selected} (Correct: ${r.correctAns})`}</p></div>`).join('')}</div>
         <button onclick="handleBackToHome()" class="w-full bg-sky-600 text-white p-4 rounded-xl font-bold hover:bg-sky-700 transition">Back to Home</button>
     `;
 }
+window.onload = checkUnlockStatus;

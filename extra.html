@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assets & Audio | Kitsune-kun</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Varela Round', sans-serif; }</style>
+</head>
+<body class="bg-sky-300 p-6">
+    <div class="max-w-4xl mx-auto bg-white/20 backdrop-blur-sm p-8 rounded-3xl shadow-xl">
+        <!-- Header with Back Button -->
+        <div class="flex items-center justify-between mb-8">
+            <a href="index.html" class="bg-sky-600 text-white px-4 py-2 rounded-xl font-bold hover:bg-sky-700 transition">← Home</a>
+            <h1 class="text-3xl font-bold text-sky-900 text-center flex-grow">Art & Audio Library</h1>
+        </div>
+        
+        <!-- Image Gallery -->
+        <h2 class="text-2xl font-bold text-sky-900 mb-4">Art Assets</h2>
+        <div id="image-gallery" class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12"></div>
+
+        <!-- Audio Library -->
+        <h2 class="text-2xl font-bold text-sky-900 mb-4">Phrases & Audio</h2>
+        <div id="audio-list" class="grid gap-3 mb-8"></div>
+
+        <!-- Bottom Back Button -->
+        <a href="index.html" class="block w-full text-center bg-sky-600 text-white p-4 rounded-xl font-bold hover:bg-sky-700 transition">Back to Home</a>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-12 mb-8 text-center text-white">
+        <p class="mb-6 opacity-90">Made with 🦊 by YopDude</p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <!-- GitHub Button -->
+            <a href="https://github.com/YopDude?tab=repositories" class="bg-slate-800 text-white px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-slate-900 transition shadow-lg">
+                <img src="images/github-logo.png" alt="Ko-fi" class="w-16 h-16 -my-4">
+                <span>Check out my GitHub</span>
+            </a>
+            
+            <!-- Ko-fi Button -->
+            <a href="https://ko-fi.com/yopdude" class="bg-[#29abe0] text-white px-6 py-2 rounded-xl font-bold flex items-center justify-center gap-3 hover:bg-[#1e8dbd] transition shadow-lg">
+                <!-- Increased size to w-16 h-16, added negative margin to counteract container padding -->
+                <img src="images/kitsune-cheeky.gif" alt="Ko-fi" class="w-16 h-16 -my-4">
+                <span>Support me on Ko-fi</span>
+            </a>
+        </div>
+    </footer>
+    <script src="quizData.js"></script>
+<script>
+    // 1. DYNAMIC IMAGE GALLERY
+    const images = ['kitsune-kun.png', 'kitsune-happy-1.png', 'kitsune-happy-2.png', 'kitsune-happy-3.png', 'kitsune-sad-1.png', 'kitsune-sad-2.png', 'kitsune-sad-3.png', 'kitsune-summary-low.png', 'kitsune-summary-mid.png', 'kitsune-quick-perfect.png', 'kitsune-final-perfect.png', 'kitsune-extra.png'];
+    const gallery = document.getElementById('image-gallery');
+    images.forEach(img => {
+        gallery.innerHTML += `<img src="images/${img}" class="w-full h-auto rounded-xl border-4 border-white shadow-md" alt="${img}">`;
+    });
+
+    // 2. BUILD TRANSLATION MAP FROM QUIZ DATA
+    const translationMap = new Map();
+    quizData.forEach(item => {
+        // Clean the question to use as the translation
+        const englishMeaning = item.q.replace(/How do you say /i, '').replace(/['?]/g, '');
+        // Map the correct answer to its English meaning
+        translationMap.set(item.a, englishMeaning);
+    });
+
+    // 3. RENDER UNIQUE AUDIO
+    const audioList = document.getElementById('audio-list');
+    const seen = new Set();
+
+    quizData.forEach(item => {
+        item.o.forEach(opt => {
+            // Only proceed if we haven't rendered this phrase yet AND it has a translation
+            if (!seen.has(opt.text) && translationMap.has(opt.text)) {
+                seen.add(opt.text);
+                const meaning = translationMap.get(opt.text);
+                
+                audioList.innerHTML += `
+                    <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-sm">
+                        <div class="flex flex-col">
+                            <span class="text-lg font-bold text-sky-900">${opt.text}</span>
+                            <span class="text-sm text-sky-600">${meaning}</span>
+                        </div>
+                        <button onclick="new Audio('audio/${opt.audio}').play()" class="bg-sky-600 text-white px-4 py-2 rounded-lg hover:bg-sky-700 transition">Play</button>
+                    </div>
+                `;
+            }
+        });
+    });
+</script>
+</body>
+</html>

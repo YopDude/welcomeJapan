@@ -3,7 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+    <!-- Social Media Preview Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yopdude.github.io/welcomeJapan/">
+    <meta property="og:title" content="Kitsune-kun's Japan Guide">
+    <meta property="og:description" content="Ready to explore Japan? Take the quick quiz and download your travel cheat sheet!">
+    <meta property="og:image" content="https://yopdude.github.io/welcomeJapan/images/social-preview.png">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://yopdude.github.io/welcomeJapan/">
+    <meta name="twitter:title" content="Kitsune-kun's Japan Guide">
+    <meta name="twitter:description" content="Ready to explore Japan? Take the quick quiz and download your travel cheat sheet!">
+    <meta name="twitter:image" content="https://yopdude.github.io/welcomeJapan/images/social-preview.png">
     <title>Kitsune-kun's Japan Guide</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
     <style>
@@ -29,11 +43,12 @@
     </style>
 </head>
 <body class="bg-sky-300 text-white min-h-screen flex flex-col items-center p-4 sm:p-6 relative">
-    <div class="flex flex-col items-center mb-6 mt-2">
-        <img src="images/kitsune-kun.png" alt="Kitsune-kun" class="w-32 h-32 sm:w-40 sm:h-40 mb-2">
+    <div class="flex flex-col items-center mb-2 mt-0">
+        <!-- Increased image size from w-32/w-40 to w-40/w-48 -->
+        <img src="images/kitsune-kun.png" alt="Kitsune-kun" class="w-40 h-40 sm:w-48 sm:h-48 mb-0">
         
-        <!-- Speech container keeps the space constant -->
-        <div class="speech-container px-4">
+        <!-- Speech container with reduced top margin -->
+        <div class="speech-container px-4 mt-0">
             <div class="bg-white text-sky-600 p-4 rounded-3xl shadow-lg max-w-[280px] sm:max-w-xs relative text-center speech-bubble">
                 <p id="kitsune-speech" class="text-sm sm:text-base">Konnichiwa! Ready to explore Japan? Check out the Cheat-Sheet below!</p>
             </div>
@@ -47,6 +62,7 @@
             <div class="grid gap-3">
                 <button onclick="startQuiz('quick')" class="bg-white text-sky-600 p-4 rounded-xl font-bold hover:bg-sky-50 transition">Quick Quiz</button>
                 <button onclick="startQuiz('final')" class="bg-white text-sky-600 p-4 rounded-xl font-bold hover:bg-sky-50 transition">Final Exam</button>
+                <a id="extras-btn" href="extra.html" class="hidden block text-center bg-emerald-600 text-white p-4 rounded-xl font-bold hover:bg-emerald-700 transition">View Extras ★</a>
                 <a id="cheat-sheet-btn" href="Japan_Travel_Cheat_Sheet.pdf" download onclick="markAsDownloaded()" class="block text-center bg-sky-600 text-white p-4 rounded-xl font-bold hover:bg-sky-700 transition">Download Cheat-Sheet</a>
             </div>
         </div>
