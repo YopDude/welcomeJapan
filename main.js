@@ -7,6 +7,31 @@ const summaryImgs = {
     finalPerfect: 'images/kitsune-final-perfect.png'
 };
 
+// List all Kitsune images
+const imagesToPreload = [
+    'images/kitsune-kun.png',
+    'images/kitsune-happy-1.png',
+    'images/kitsune-happy-2.png',
+    'images/kitsune-sad-1.png',
+    'images/kitsune-sad-2.png',
+    'images/kitsune-summary-low.png',
+    'images/kitsune-summary-mid.png',
+    'images/kitsune-quick-perfect.png',
+    'images/kitsune-final-perfect.png'
+];
+
+function preloadImages(imageArray) {
+    imageArray.forEach((url) => {
+        const img = new Image();
+        img.src = url;
+    });
+}
+
+// Call the function when the page loads
+window.addEventListener('load', () => {
+    preloadImages(imagesToPreload);
+});
+
 let state = { currentIdx: 0, score: 0, results: [] };
 let activeQuizData = [];
 let quizMode = 'quick';
