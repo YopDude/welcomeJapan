@@ -9,15 +9,24 @@ const summaryImgs = {
     zero: 'images/kitsune-extra.png'
 };
 
-let state = { currentIdx: 0, score: 0, results: [] };
+let state = { currentIdx: 0, score: 0, results: [], firstCorrect: true };
 let activeQuizData = [];
 let quizMode = 'quick';
 let currentAudio = null;
 
 function updateKitsune(type) {
     const img = document.querySelector('img[alt="Kitsune-kun"]');
-    if (type === 'correct') img.src = correctImgs[Math.floor(Math.random() * correctImgs.length)];
-    else if (type === 'wrong') img.src = wrongImgs[Math.floor(Math.random() * wrongImgs.length)];
+    
+    if (type === 'correct') {
+        if (state.firstCorrect) {
+            img.src = 'images/kitsune-happy-2.png';
+            state.firstCorrect = false; // Disable the forced first-time trigger
+        } else {
+            img.src = correctImgs[Math.floor(Math.random() * correctImgs.length)];
+        }
+    } else if (type === 'wrong') {
+        img.src = wrongImgs[Math.floor(Math.random() * wrongImgs.length)];
+    }
 }
 
 function startQuiz(mode) {
@@ -31,7 +40,7 @@ function startQuiz(mode) {
         o: [...q.o].sort(() => 0.5 - Math.random())
     }));
     
-    state = { currentIdx: 0, score: 0, results: [] };
+    state = { currentIdx: 0, score: 0, results: [], firstCorrect: true };
     renderQuestion();
 }
 
@@ -40,6 +49,8 @@ function backToHome() {
     document.getElementById('counter').classList.add('hidden');
     document.getElementById('home-screen').classList.remove('hidden');
     document.querySelector('img[alt="Kitsune-kun"]').src = 'images/kitsune-kun.png';
+    // Check if we need to apply the "extra" state (this will swap the image if unlocked)
+    checkUnlockStatus();
     document.getElementById('kitsune-speech').innerText = "Konnichiwa! Ready to explore Japan?";
 }
 
@@ -90,6 +101,7 @@ function handleAnswer(selected) {
 
 function checkUnlockStatus() {
     const isUnlocked = localStorage.getItem('extrasUnlocked') === 'true';
+    const kitsuneImg = document.querySelector('img[alt="Kitsune-kun"]');
     if (isUnlocked) {
         // Unlock button visibility
         const extraBtn = document.getElementById('extras-btn');
@@ -98,6 +110,9 @@ function checkUnlockStatus() {
         // Add star to Final Exam button
         const finalBtn = document.querySelector('button[onclick="startQuiz(\'final\')"]');
         if (finalBtn && !finalBtn.innerText.includes('★')) finalBtn.innerText += ' ★';
+
+        // Change sprite on home screen
+        kitsuneImg.src = 'images/kitsune-matsuri.png';
     }
 }
 
@@ -107,8 +122,12 @@ function renderSummary(mode) {
     
     // Check if user passed the 85% threshold in Final mode
     if (mode === 'final' && percentage >= 85) {
-        localStorage.setItem('extrasUnlocked', 'true');
-        checkUnlockStatus();
+        // Only show the message if it wasn't already unlocked
+        if (localStorage.getItem('extrasUnlocked') !== 'true') {
+            document.getElementById('kitsune-speech').innerText = "Sugoi! You've unlocked the secret extras! Check the home screen!";
+            localStorage.setItem('extrasUnlocked', 'true');
+            checkUnlockStatus();
+        }
     }
     const img = document.querySelector('img[alt="Kitsune-kun"]'); // Score config for final image
     img.src = (percentage === 0) ? summaryImgs.zero :
@@ -122,4 +141,39 @@ function renderSummary(mode) {
         <button onclick="handleBackToHome()" class="w-full bg-sky-600 text-white p-4 rounded-xl font-bold hover:bg-sky-700 transition">Back to Home</button>
     `;
 }
+
+let idleTimer;
+let lastSpeech = "Konnichiwa! Ready to explore Japan? Check out the Cheat-Sheet below!";
+let lastImgSrc = 'images/kitsune-kun.png'; // Initialize with the default image
+const IDLE_TIME = 10000;
+
+function resetIdleTimer() {
+    clearTimeout(idleTimer);
+    const kitsuneImg = document.querySelector('img[alt="Kitsune-kun"]');
+    const speechBubble = document.getElementById('kitsune-speech');
+    
+    // If we were idle, restore the previous state using innerHTML
+    if (kitsuneImg.src.includes('kitsune-lazy.png')) {
+        kitsuneImg.src = lastImgSrc;
+        speechBubble.innerHTML = lastSpeech; // Use innerHTML to preserve bold tags
+    }
+    
+    idleTimer = setTimeout(() => {
+        // Save the current HTML (including formatting tags)
+        lastSpeech = speechBubble.innerHTML;
+        lastImgSrc = kitsuneImg.src;
+        
+        kitsuneImg.src = 'images/kitsune-lazy.png';
+        speechBubble.innerText = "zzz..."; // Plain text for "zzz" is fine
+    }, IDLE_TIME);
+}
+
+// Listen for user activity
+['mousedown', 'keydown', 'touchstart'].forEach(evt => 
+    document.addEventListener(evt, resetIdleTimer, false)
+);
+
+// Initialize timer
+resetIdleTimer();
+
 window.onload = checkUnlockStatus;
