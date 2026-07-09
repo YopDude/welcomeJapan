@@ -52,8 +52,10 @@
     // 1. DYNAMIC IMAGE GALLERY
     const images = ['kitsune-kun.png', 'kitsune-happy-1.png', 'kitsune-happy-2.png', 'kitsune-happy-3.png', 'kitsune-sad-1.png', 'kitsune-sad-2.png', 'kitsune-sad-3.png', 'kitsune-summary-low.png', 'kitsune-summary-mid.png', 'kitsune-quick-perfect.png', 'kitsune-final-perfect.png', 'kitsune-extra.png', 'favicon.png','kitsune-matsuri.png','kitsune-cheeky.png','kitsune-lazy.png'];
     const gallery = document.getElementById('image-gallery');
+
     images.forEach(img => {
-        gallery.innerHTML += `<img src="images/${img}" class="w-full h-auto rounded-xl border-4 border-white shadow-md" alt="${img}">`;
+        // We added "aspect-square" and "object-cover" here
+        gallery.innerHTML += `<img src="images/${img}" class="w-full aspect-square object-cover rounded-xl border-4 border-white shadow-md" alt="${img}">`;
     });
 
     // 2. BUILD TRANSLATION MAP FROM QUIZ DATA
