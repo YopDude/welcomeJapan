@@ -163,7 +163,7 @@ function renderSummary(mode) {
 let idleTimer;
 let lastSpeech = "Konnichiwa! Ready to explore Japan? Check out the Cheat-Sheet below!";
 let lastImgSrc = 'images/kitsune-kun.png'; // Initialize with the default image
-const IDLE_TIME = 10000;
+const IDLE_TIME = 33000;
 
 function resetIdleTimer() {
     clearTimeout(idleTimer);
