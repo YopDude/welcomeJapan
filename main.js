@@ -9,6 +9,24 @@ const summaryImgs = {
     zero: 'images/kitsune-extra.png'
 };
 
+const imagesToPreload = [
+    'images/kitsune-kun.png', 'images/kitsune-happy-1.png', 'images/kitsune-happy-2.png', 
+    'images/kitsune-happy-3.png', 'images/kitsune-sad-1.png', 'images/kitsune-sad-2.png', 
+    'images/kitsune-sad-3.png', 'images/kitsune-summary-low.png', 'images/kitsune-summary-mid.png', 
+    'images/kitsune-quick-perfect.png', 'images/kitsune-final-perfect.png', 'images/kitsune-extra.png', 
+    'images/kitsune-matsuri.png', 'images/kitsune-lazy.png'
+];
+
+function preloadImages() {
+    imagesToPreload.forEach((src) => {
+        const img = new Image();
+        img.src = src;
+    });
+}
+
+// Call it once at the start to preload all images
+preloadImages();
+
 let state = { currentIdx: 0, score: 0, results: [], firstCorrect: true };
 let activeQuizData = [];
 let quizMode = 'quick';
