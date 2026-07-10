@@ -54,41 +54,41 @@
     const gallery = document.getElementById('image-gallery');
 
     images.forEach(img => {
-        // We added "aspect-square" and "object-cover" here
         gallery.innerHTML += `<img src="images/${img}" class="w-full aspect-square object-cover rounded-xl border-4 border-white shadow-md" alt="${img}">`;
     });
 
-    // 2. BUILD TRANSLATION MAP FROM QUIZ DATA
-    const translationMap = new Map();
-    quizData.forEach(item => {
-        // Clean the question to use as the translation
-        const englishMeaning = item.q.replace(/How do you say /i, '').replace(/['?]/g, '');
-        // Map the correct answer to its English meaning
-        translationMap.set(item.a, englishMeaning);
-    });
+    // 2. BUILD ENGLISH-MEANING MAP FROM QUIZ DATA
+    // Each phrase id may be the answer to one question, or an option/distractor
+    // in others. We only want the meaning tied to the question it's the correct
+    // answer for, so search quizData for the item whose `answer` matches this id.
+    const meaningFor = (phraseId) => {
+        const match = quizData.find(item => item.answer === phraseId);
+        return match ? match.q.replace(/\s*\(you may hear this\)/i, '') : '';
+    };
 
-    // 3. RENDER UNIQUE AUDIO
+    // 3. RENDER AUDIO LIBRARY - one entry per unique phrase (no de-dupe hacks
+    // needed now, since `phrases` is already a de-duplicated lookup table)
     const audioList = document.getElementById('audio-list');
-    const seen = new Set();
+    let currentAudio = null; // shared reference so playback never overlaps
 
-    quizData.forEach(item => {
-        item.o.forEach(opt => {
-            // Only proceed if we haven't rendered this phrase yet AND it has a translation
-            if (!seen.has(opt.text) && translationMap.has(opt.text)) {
-                seen.add(opt.text);
-                const meaning = translationMap.get(opt.text);
-                
-                audioList.innerHTML += `
-                    <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-sm">
-                        <div class="flex flex-col">
-                            <span class="text-lg font-bold text-sky-900">${opt.text}</span>
-                            <span class="text-sm text-sky-600">${meaning}</span>
-                        </div>
-                        <button onclick="new Audio('audio/${opt.audio}').play()" class="bg-sky-600 text-white px-4 py-2 rounded-lg hover:bg-sky-700 transition">Play</button>
-                    </div>
-                `;
-            }
-        });
+    function playPhraseAudio(file) {
+        if (currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; }
+        if (file) { currentAudio = new Audio(`audio/${file}`); currentAudio.play(); }
+    }
+    // Expose to inline onclick handlers below
+    window.playPhraseAudio = playPhraseAudio;
+
+    Object.entries(phrases).forEach(([id, phrase]) => {
+        const meaning = meaningFor(id);
+        audioList.innerHTML += `
+            <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-sm">
+                <div class="flex flex-col">
+                    <span class="text-lg font-bold text-sky-900">${phrase.romaji}</span>
+                    <span class="text-sm text-sky-600">${meaning}</span>
+                </div>
+                <button onclick="playPhraseAudio('${phrase.audio}')" aria-label="Play pronunciation for ${phrase.romaji}" title="Play pronunciation" class="bg-sky-600 text-white px-4 py-2 rounded-lg hover:bg-sky-700 transition">Play</button>
+            </div>
+        `;
     });
 </script>
 </body>
