@@ -62,7 +62,7 @@ const quizData = [
     { q: "Please wait a moment", answer: "chottoMatte", options: ["chottoMatte", "onegaishimasu", "sumimasen"] },
     { q: "To [location], please (taxi)", answer: "bashoMade", options: ["bashoMade", "ekiDoko", "chottoMatte"], tip: "Hand the driver a written address or map pin if your pronunciation is shaky." },
     { q: "Which platform for [location]?", answer: "bashoNanbansen", options: ["bashoNanbansen", "denshaTomarimasu", "kaadoChaaji"] },
-    { q: "Does this train stop at [location]?", answer: "denshaTomarimasu", options: ["bashoNanbansen", "denshaTomarimasu", "kaadoChaaji"], tip: "Check that you board the correct train type - a limited express often needs a paid seat reservation." },
+    { q: "Does this train stop at [location]?", answer: "denshaTomarimasu", options: ["bashoNanbansen", "denshaTomarimasu", "kaadoChaaji"], tip: "A limited express train often needs a separate paid seat reservation." },
     { q: "Can I recharge this IC card?", answer: "kaadoChaaji", options: ["bashoNanbansen", "denshaTomarimasu", "kaadoChaaji"], tip: "Suica and PASMO can be topped up with cash at any station machine." },
     { q: "Please give me this", answer: "koreKudasai", options: ["koreKudasai", "ikura", "atatamete"], tip: "Great when pointing at an item on a menu or shelf." },
     { q: "How much?", answer: "ikura", options: ["ikura", "koreKudasai", "shichaku"], tip: "Handy at market stalls or counters with no price listed." },
