@@ -43,20 +43,33 @@ let quizMode = 'quick';
 let currentAudio = null;
 let answerLocked = false;
 const ANSWER_DELAY_MS = 900;
+let lastKitsuneImg = '';
 
 function updateKitsune(type) {
     const img = document.querySelector('img[alt="Kitsune-kun"]');
-
-    if (type === 'correct') {
-        if (state.firstCorrect) {
-            img.src = 'images/kitsune-happy-2.png';
-            state.firstCorrect = false; // Disable the forced first-time trigger
-        } else {
-            img.src = correctImgs[Math.floor(Math.random() * correctImgs.length)];
-        }
-    } else if (type === 'wrong') {
-        img.src = wrongImgs[Math.floor(Math.random() * wrongImgs.length)];
+    
+    // Handle the forced first-time state
+    if (type === 'correct' && state.firstCorrect) {
+        lastKitsuneImg = 'images/kitsune-happy-2.png';
+        img.src = lastKitsuneImg;
+        state.firstCorrect = false;
+        return;
     }
+
+    // Select the appropriate array
+    const sourceArray = (type === 'correct') ? correctImgs : wrongImgs;
+
+    // Filter out the last image used to create a "safe" pool
+    const safePool = sourceArray.filter(src => src !== lastKitsuneImg);
+
+    // If the array only has 1 item, we have no choice but to repeat. 
+    // If we have more, pick randomly from the filtered pool.
+    const nextSrc = (safePool.length > 0) 
+        ? safePool[Math.floor(Math.random() * safePool.length)] 
+        : sourceArray[0];
+
+    img.src = nextSrc;
+    lastKitsuneImg = nextSrc; // Update tracker
 }
 
 function startQuiz(mode) {
